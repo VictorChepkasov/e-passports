@@ -1,9 +1,49 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >= 0.8.0 <=0.8.19;
 
+import "./e-passport.sol";
+
 contract Factory {
     uint totalPassports;
     // uint totalPersons; - эта перменная была бы полезна для переписи населения
+    EPassport[] public e_passports;
 
+    function createEPassport(string memory first_name,
+        string memory last_name,
+        string memory patronymic,
+        string memory photo,
+        string memory place_of_registration,
+        uint gender,
+        uint date_of_birth
+    ) external {
+        totalPassports++;
+        EPassport e_passport = new EPassport(first_name,
+        last_name,
+        patronymic,
+        photo,
+        place_of_registration,
+        gender,
+        date_of_birth, totalPassports);
+        e_passports.push(e_passport);
+    }
 
+    function callUpdatePassportInfo(uint id,
+        string memory first_name,
+        string memory last_name,
+        string memory photo
+    ) external {
+        e_passports[id].updatePassportInfo(first_name, last_name, photo);
+    }
+
+    function callAddWallet(uint id, address wallet) external {
+        e_passports[id].addWallet(wallet);
+    }
+
+    function callDied(uint id) external {
+        e_passports[id].died();
+    }
+
+    function callGetEPassport(uint id) external view returns(EPassport) {
+        return e_passports[id];
+    }
 }
