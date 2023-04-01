@@ -3,9 +3,8 @@ pragma solidity >= 0.8.0 <=0.8.19;
 
 contract EPassport {
     //куда вставить цифровые подписи?
-    //31556926 - год в формате unix temestamp
-    //свршеннолетие в 18
-
+    //31556926 - год в формате unix timestamp
+    //совршеннолетие в 18
     struct EPassportInfo {
         address wallet;
         string first_name;
@@ -13,7 +12,7 @@ contract EPassport {
         string patronymic; //отчество
         string photo;
         string place_of_registration; //адрес проживания
-        uint id; //id - цникальный идентификатор паспорта
+        uint id; //id - уникальный идентификатор паспорта
         uint gender; //0 - male, 1 - female
         uint date_of_birth; 
         uint date_of_death; //если не умер, то 0
