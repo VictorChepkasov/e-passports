@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >= 0.8.0 <=0.8.19;
+pragma solidity ^0.8.0;
 
 import "./e-passport.sol";
 
@@ -43,7 +43,11 @@ contract Factory {
         e_passports[id].died();
     }
 
-    function callGetEPassport(uint id) external view returns(EPassport) {
-        return e_passports[id];
+    function callGetEPassport(uint id) external view returns(EPassport.EPassportInfo memory) {
+        return e_passports[id].getPassportInfo();
     }
+
+    // function getAllEPassports() external view returns(EPassport.EPassportInfo[] memory) {
+    //     return e_passports;
+    // }
 }
