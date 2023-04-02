@@ -99,4 +99,8 @@ contract Marriage {
             setMarriageInfo();
         }
     }
+
+    function getMarriageInfo() public view returns(MarriageInfo memory) {
+        return marriage;
+    }
 }
