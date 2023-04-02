@@ -64,7 +64,7 @@ contract Marriage {
         marriage.partner_full_name = partner_full_name;
         marriage.id = id;
         // по умолчанию брак не действителен, после согласия двух сторон, он будет действителен
-        marriage.valid = true; 
+        marriage.valid = false; 
     }
 
     function updatePartnerName(string memory partner_full_name) public onlyMarriage onlyPartner {
