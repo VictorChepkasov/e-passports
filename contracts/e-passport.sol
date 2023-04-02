@@ -1,6 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "./marriage_contract.sol";
+
 contract EPassport {
     //куда вставить цифровые подписи?
     //31556926 - год в формате unix timestamp

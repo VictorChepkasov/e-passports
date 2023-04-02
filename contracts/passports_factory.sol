@@ -47,7 +47,7 @@ contract Factory {
         return e_passports[id].getPassportInfo();
     }
 
-    // function getAllEPassports() external view returns(EPassport.EPassportInfo[] memory) {
-    //     return e_passports;
-    // }
+    function getAllEPassports() external view returns(EPassport[] memory) {
+        return e_passports;
+    }
 }
