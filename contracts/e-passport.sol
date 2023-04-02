@@ -53,7 +53,8 @@ contract EPassport {
         string memory photo,
         string memory place_of_registration,
         uint gender,
-        uint date_of_birth, uint id
+        uint date_of_birth,
+        uint id
     ) {
         e_passport.wallet = msg.sender;
         e_passport.first_name = first_name;
@@ -65,7 +66,7 @@ contract EPassport {
         e_passport.date_of_birth = date_of_birth;
         e_passport.date_of_issue = block.timestamp;
         e_passport.died = false;
-        e_passport.id = id; //фабрика решит
+        e_passport.id = id;
         e_passport.married = false;
         e_passport.wallets.push(msg.sender);
 
