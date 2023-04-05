@@ -1,13 +1,11 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./marriage_contract.sol";
-
 contract EPassport {
     //куда вставить цифровые подписи?
     //31556926 - год в формате unix timestamp
     //совршеннолетие в 18
-    struct EPassportInfo {
+   struct EPassportInfo {
         address wallet;
         string first_name;
         string last_name;
@@ -24,7 +22,7 @@ contract EPassport {
         address[] wallets;
     }
 
-    EPassportInfo private e_passport;
+    EPassportInfo public e_passport;
     event CreatePassoport(uint indexed id, address wallet, string first_name);
     event Died(uint indexed id, address wallet, uint diedTime);
 
@@ -82,6 +80,10 @@ contract EPassport {
         e_passport.first_name = first_name;
         e_passport.last_name = last_name;
         e_passport.photo = photo;
+    }
+
+    function updateMarried(bool married) external {
+        e_passport.married = married;
     }
 
     function died() public {

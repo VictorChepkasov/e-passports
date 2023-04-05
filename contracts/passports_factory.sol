@@ -1,12 +1,14 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "./marriage_factory.sol";
 import "./e-passport.sol";
 
-contract Factory {
+contract EPFactory {
     uint totalPassports;
     // uint totalPersons; - эта перменная была бы полезна для переписи населения
     EPassport[] public e_passports;
+    mapping(address => EPassport) public ep_mapping;
 
     function createEPassport(string memory first_name,
         string memory last_name,
@@ -25,6 +27,7 @@ contract Factory {
         gender,
         date_of_birth, totalPassports);
         e_passports.push(e_passport);
+        ep_mapping[msg.sender] = e_passport;
     }
 
     function callUpdatePassportInfo(uint id,

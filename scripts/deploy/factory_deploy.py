@@ -1,11 +1,11 @@
-from brownie import Factory, accounts
+from brownie import EPFactory, accounts
 
 def main():
     deploy_factory()
 
 def deploy_factory():
     account = accounts.load('victor')
-    deployed = Factory.deploy({'from': account, "priority_fee": "1 wei"})
+    deployed = EPFactory.deploy({'from': account, "priority_fee": "1 wei"})
 
     print(f'Deployed seccesfull: {deployed}')
 

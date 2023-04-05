@@ -1,6 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "./passports_factory.sol";
+
 /* 
 Очень простой (и не сильно проработанный) пример того, как можно совершенствовать контракт,
     добавляя разные модули.
@@ -25,7 +27,7 @@ contract Marriage {
     }
     
     MarriageInfo marriage;
-
+    EPFactory EPFAddress;
     event CreateMarriage(address creator, address partner, uint indexed id);
 
     modifier creatorConsent() {
@@ -53,7 +55,8 @@ contract Marriage {
         _;
     }
 
-    constructor(address partner,
+    constructor(address partner, 
+        address _EPFAddress,
         uint id,
         string memory creator_full_name,
         string memory partner_full_name
@@ -65,6 +68,8 @@ contract Marriage {
         marriage.id = id;
         // по умолчанию брак не действителен, после согласия двух сторон, он будет действителен
         marriage.valid = false; 
+
+        EPFAddress = EPFactory(_EPFAddress);
     }
 
     function updatePartnerName(string memory partner_full_name) public onlyMarriage onlyPartner {
@@ -78,6 +83,8 @@ contract Marriage {
     function setMarriageInfo() public partnerConsent creatorConsent {
         marriage.valid = true;
         marriage.date_of_conclusion = block.timestamp;
+
+        EPFAddress.ep_mapping(msg.sender).updateMarried(true);
 
         emit CreateMarriage(marriage.creator, marriage.partner, marriage.id);
     }
