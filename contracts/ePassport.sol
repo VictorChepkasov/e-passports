@@ -48,6 +48,7 @@ contract EPassport {
     }
 
     constructor(
+        address wallet,
         string memory firstName,
         string memory lastName,
         string memory patronymic,
@@ -57,7 +58,7 @@ contract EPassport {
         uint dateOfBirth,
         uint id
     ) {
-        ePassport.wallet = msg.sender;
+        ePassport.wallet =  wallet;
         ePassport.firstName = firstName;
         ePassport.lastName = lastName;
         ePassport.patronymic = patronymic;

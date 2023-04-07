@@ -11,6 +11,7 @@ contract EPFactory {
     EPassport.EPassportInfo[] ePassportsInfo;
 
     function createEPassport(
+        address wallet,
         string memory firstName,
         string memory lastName,
         string memory patronymic,
@@ -21,6 +22,7 @@ contract EPFactory {
     ) external {
         totalPassports++;
         EPassport ePassport = new EPassport(
+        wallet,
         firstName,
         lastName,
         patronymic,
