@@ -13,13 +13,14 @@ contract MarriageFactory {
         epFactoryAddress = _epFactoryAddress;
     }
 
-    function createMarriage(address partner,
-        uint id,
+    function createMarriage(
+        address partner,
         string memory creatorFullName,
         string memory partnerFullName
     ) external {
+        require(msg.sender != partner, "You can't marry yourself!");
         totalMarriage++;
-        Marriage marriage = new Marriage(partner, epFactoryAddress, id, creatorFullName, partnerFullName);
+        Marriage marriage = new Marriage(partner, epFactoryAddress, totalMarriage, creatorFullName, partnerFullName);
         marriages.push(marriage);
         addressMarriage[msg.sender][partner] = marriage;
     }

@@ -1,10 +1,11 @@
 from brownie import EPFactory, accounts
 
 def main():
-    ep_deploy()
+    epDeploy()
 
-def ep_deploy():
+def epDeploy():
     account = accounts.load('victor')
+    print(f'Accounts: {account}')
     deployed = EPFactory[-1].createEPassport('first_name',
                                            'last_name',
                                            'patronymic',

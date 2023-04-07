@@ -1,13 +1,14 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./marriage_factory.sol";
-import "./e-passport.sol";
+import "./marriageFactory.sol";
+import "./ePassport.sol";
 
 contract EPFactory {
     uint totalPassports;
     EPassport[] public ePassports;
     mapping(address => EPassport) public epMapping;
+    EPassport.EPassportInfo[] ePassportsInfo;
 
     function createEPassport(
         string memory firstName,
@@ -52,7 +53,14 @@ contract EPFactory {
         return ePassports[id].getPassportInfo();
     }
 
-    function getAllEPassports() external view returns(EPassport[] memory) {
-        return ePassports;
+    function getAllEPassports() external view returns(EPassport.EPassportInfo[] memory) {
+        EPassport.EPassportInfo[] memory allEPassports = ePassportsInfo;
+        
+        for (uint i = 0; i < ePassports.length; i++) {
+            EPassport.EPassportInfo memory epInfo = ePassports[i].getPassportInfo();
+            allEPassports[i] = epInfo; 
+        }
+
+        return allEPassports;
     }
 }
