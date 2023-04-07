@@ -1,8 +1,8 @@
-from brownie import EPFactory, accounts
+from brownie import EPFactory
 
 def main():
-    # getPassportInfo(0)
-    getAllPassportsInfo()
+    getPassportInfo(0)
+    # getAllPassportsInfo()
 
 def getPassportInfo(passportId):
     info = EPFactory[-1].callGetEPassport(passportId)

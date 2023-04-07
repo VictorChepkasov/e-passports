@@ -6,7 +6,7 @@ def main():
 def epDeploy():
     account = accounts.load('victor')
     print(f'Accounts: {account}')
-    deployed = EPFactory[-1].createEPassport('first_name',
+    deployed = EPFactory[-1].createEPassport.call('first_name',
                                            'last_name',
                                            'patronymic',
                                            'photo',
