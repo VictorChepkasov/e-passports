@@ -4,12 +4,13 @@ account = accounts.load('victor')
 print(f'Accounts: {account}')
 
 def main():
-    deployFactory()
-    deployEp()
-    getPassportInfo(0)
-    deployMarriageFactory()
-    marriageDeploy()
-    getPassportInfo(0)
+    # deployFactory()
+    # deployEp()
+    # getPassportInfo(0)
+    # deployMarriageFactory()
+    # marriageDeploy()
+    getMarriageInfo(0)
+    # getPassportInfo(0)
 
 
 def deployFactory():
@@ -44,9 +45,14 @@ def deployMarriageFactory():
 
 def marriageDeploy():
     print(f'Accounts: {account}')
-    deployed = MarriageFactory[-1].createMarriage('0x5dE5F9e27BE687bF21f0795fA2D0359972739aB6',
+    deployed = MarriageFactory[-1].createMarriage( 
+                                                  '0x5dE5F9e27BE687bF21f0795fA2D0359972739aB6',
                                                   'Victor',
                                                   'NonVictor',
                                                     {'from': account, "priority_fee": "1 wei"})
 
     print(f'Created marriage: {deployed}')
+
+def getMarriageInfo(i):
+    info = MarriageFactory[-1].getMarriageInfo(i)
+    print(f'Marriage info: {info}')

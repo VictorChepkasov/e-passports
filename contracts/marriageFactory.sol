@@ -21,7 +21,7 @@ contract MarriageFactory {
     ) external {
         require(msg.sender != partner, "You can't marry yourself!");
         totalMarriage++;
-        Marriage marriage = new Marriage(partner, epFactoryAddress, totalMarriage, creatorFullName, partnerFullName);
+        Marriage marriage = new Marriage(msg.sender, partner, epFactoryAddress, totalMarriage, creatorFullName, partnerFullName);
         marriages.push(marriage);
         addressMarriage[msg.sender][partner] = marriage;
     }

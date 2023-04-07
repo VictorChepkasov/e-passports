@@ -56,13 +56,14 @@ contract Marriage {
     }
 
     constructor(
+        address creator, 
         address partner, 
         address _epFactoryAddress,
         uint id,
         string memory creatorFullName,
         string memory partnerFullName
     ) {
-        marriage.creator = msg.sender;
+        marriage.creator = creator;
         marriage.partner = partner;
         marriage.creatorFullName = creatorFullName;
         marriage.partnerFullName = partnerFullName;
@@ -85,7 +86,7 @@ contract Marriage {
         marriage.valid = true;
         marriage.dateOfConclusion = block.timestamp;
 
-        epFactoryAddress.epMapping(msg.sender).updateMarried(true);
+        epFactoryAddress.epMapping(marriage.creator).updateMarried(true);
 
         emit CreateMarriage(marriage.creator, marriage.partner, marriage.id);
     }
