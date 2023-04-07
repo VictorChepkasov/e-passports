@@ -6,16 +6,20 @@ import "./marriage.sol";
 contract MarriageFactory {
     uint totalMarriage;
     Marriage[] public marriages;
+    address epFactoryAddress;
     mapping(address => mapping(address => Marriage)) public addressMarriage;
+
+    constructor(address _EPFAddress) {
+        epFactoryAddress = _EPFAddress;
+    }
 
     function createMarriage(address partner,
         uint id,
-        address _EPFAddress,
         string memory creator_full_name,
         string memory partner_full_name
     ) external {
         totalMarriage++;
-        Marriage marriage = new Marriage(partner, _EPFAddress, id, creator_full_name, partner_full_name);
+        Marriage marriage = new Marriage(partner, epFactoryAddress, id, creator_full_name, partner_full_name);
         marriages.push(marriage);
         addressMarriage[msg.sender][partner] = marriage;
     }
