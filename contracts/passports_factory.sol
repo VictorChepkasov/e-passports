@@ -6,51 +6,53 @@ import "./e-passport.sol";
 
 contract EPFactory {
     uint totalPassports;
-    // uint totalPersons; - эта перменная была бы полезна для переписи населения
-    EPassport[] public e_passports;
-    mapping(address => EPassport) public ep_mapping;
+    EPassport[] public ePassports;
+    mapping(address => EPassport) public epMapping;
 
-    function createEPassport(string memory first_name,
-        string memory last_name,
+    function createEPassport(
+        string memory firstName,
+        string memory lastName,
         string memory patronymic,
         string memory photo,
-        string memory place_of_registration,
+        string memory placeOfRegistration,
         uint gender,
-        uint date_of_birth
+        uint dateOfBirth
     ) external {
         totalPassports++;
-        EPassport e_passport = new EPassport(first_name,
-        last_name,
+        EPassport ePassport = new EPassport(
+        firstName,
+        lastName,
         patronymic,
         photo,
-        place_of_registration,
+        placeOfRegistration,
         gender,
-        date_of_birth, totalPassports);
-        e_passports.push(e_passport);
-        ep_mapping[msg.sender] = e_passport;
+        dateOfBirth, totalPassports);
+        ePassports.push(ePassport);
+        epMapping[msg.sender] = ePassport;
     }
 
-    function callUpdatePassportInfo(uint id,
-        string memory first_name,
-        string memory last_name,
+    function callUpdatePassportInfo(
+        uint id,
+        string memory firstName,
+        string memory lastName,
         string memory photo
     ) external {
-        e_passports[id].updatePassportInfo(first_name, last_name, photo);
+        ePassports[id].updatePassportInfo(firstName, lastName, photo);
     }
 
     function callAddWallet(uint id, address wallet) external {
-        e_passports[id].addWallet(wallet);
+        ePassports[id].addWallet(wallet);
     }
 
     function callDied(uint id) external {
-        e_passports[id].died();
+        ePassports[id].setDied();
     }
 
     function callGetEPassport(uint id) external view returns(EPassport.EPassportInfo memory) {
-        return e_passports[id].getPassportInfo();
+        return ePassports[id].getPassportInfo();
     }
 
     function getAllEPassports() external view returns(EPassport[] memory) {
-        return e_passports;
+        return ePassports;
     }
 }

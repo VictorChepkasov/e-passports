@@ -5,21 +5,21 @@ import "./marriage.sol";
 
 contract MarriageFactory {
     uint totalMarriage;
-    Marriage[] public marriages;
     address epFactoryAddress;
+    Marriage[] public marriages;
     mapping(address => mapping(address => Marriage)) public addressMarriage;
 
-    constructor(address _EPFAddress) {
-        epFactoryAddress = _EPFAddress;
+    constructor(address _epFactoryAddress) {
+        epFactoryAddress = _epFactoryAddress;
     }
 
     function createMarriage(address partner,
         uint id,
-        string memory creator_full_name,
-        string memory partner_full_name
+        string memory creatorFullName,
+        string memory partnerFullName
     ) external {
         totalMarriage++;
-        Marriage marriage = new Marriage(partner, epFactoryAddress, id, creator_full_name, partner_full_name);
+        Marriage marriage = new Marriage(partner, epFactoryAddress, id, creatorFullName, partnerFullName);
         marriages.push(marriage);
         addressMarriage[msg.sender][partner] = marriage;
     }

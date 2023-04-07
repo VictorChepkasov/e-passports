@@ -15,28 +15,28 @@ contract Marriage {
     struct MarriageInfo {
         address creator;
         address partner;
-        string creator_full_name; // имя, фамилия и отчество
-        string partner_full_name;
+        string creatorFullName; // имя, фамилия и отчество
+        string partnerFullName;
         uint id;
-        uint date_of_conclusion; //дата заключения договора
-        uint date_of_creator_consent;
-        uint date_of_partner_consent;
-        bool creator_consent;
-        bool partner_consent;
+        uint dateOfConclusion; //дата заключения договора
+        uint dateOfCreatorConsent;
+        uint dateOfPartnerConsent;
+        bool creatorConsent;
+        bool partnerConsent;
         bool valid; //находятся ли люди в браке?
     }
     
     MarriageInfo marriage;
-    EPFactory EPFAddress;
+    EPFactory epFactoryAddress;
     event CreateMarriage(address creator, address partner, uint indexed id);
 
     modifier creatorConsent() {
-        require(marriage.creator_consent == true, "creator disagrees!");
+        require(marriage.creatorConsent == true, "creator disagrees!");
         _;
     }
 
     modifier partnerConsent() {
-        require(marriage.partner_consent == true, "Partner disagrees!");
+        require(marriage.partnerConsent == true, "Partner disagrees!");
         _;
     }
 
@@ -55,54 +55,55 @@ contract Marriage {
         _;
     }
 
-    constructor(address partner, 
-        address _EPFAddress,
+    constructor(
+        address partner, 
+        address _epFactoryAddress,
         uint id,
-        string memory creator_full_name,
-        string memory partner_full_name
+        string memory creatorFullName,
+        string memory partnerFullName
     ) {
         marriage.creator = msg.sender;
         marriage.partner = partner;
-        marriage.creator_full_name = creator_full_name;
-        marriage.partner_full_name = partner_full_name;
+        marriage.creatorFullName = creatorFullName;
+        marriage.partnerFullName = partnerFullName;
         marriage.id = id;
         // по умолчанию брак не действителен, после согласия двух сторон, он будет действителен
         marriage.valid = false; 
 
-        EPFAddress = EPFactory(_EPFAddress);
+        epFactoryAddress = EPFactory(_epFactoryAddress);
     }
 
-    function updatePartnerName(string memory partner_full_name) public onlyMarriage onlyPartner {
-        marriage.partner_full_name = partner_full_name;
+    function updatePartnerName(string memory partnerFullName) public onlyMarriage onlyPartner {
+        marriage.partnerFullName = partnerFullName;
     }
     
-    function updateCreatorName(string memory creator_full_name) public onlyMarriage onlyCreator {
-        marriage.creator_full_name = creator_full_name;
+    function updateCreatorName(string memory creatorFullName) public onlyMarriage onlyCreator {
+        marriage.creatorFullName = creatorFullName;
     }
 
     function setMarriageInfo() public partnerConsent creatorConsent {
         marriage.valid = true;
-        marriage.date_of_conclusion = block.timestamp;
+        marriage.dateOfConclusion = block.timestamp;
 
-        EPFAddress.ep_mapping(msg.sender).updateMarried(true);
+        epFactoryAddress.epMapping(msg.sender).updateMarried(true);
 
         emit CreateMarriage(marriage.creator, marriage.partner, marriage.id);
     }
 
     function setCreatorConsent() public onlyCreator {
-        marriage.creator_consent = true;
-        marriage.date_of_creator_consent = block.timestamp;
+        marriage.creatorConsent = true;
+        marriage.dateOfCreatorConsent = block.timestamp;
 
-        if (marriage.partner_consent == true) {
+        if (marriage.partnerConsent == true) {
             setMarriageInfo();
         }
     }
 
     function setPartnerConsent() public onlyPartner {
-        marriage.partner_consent = true;
-        marriage.date_of_partner_consent = block.timestamp;
+        marriage.partnerConsent = true;
+        marriage.dateOfPartnerConsent = block.timestamp;
 
-        if (marriage.creator_consent == true) {
+        if (marriage.creatorConsent == true) {
             setMarriageInfo();
         }
     }
