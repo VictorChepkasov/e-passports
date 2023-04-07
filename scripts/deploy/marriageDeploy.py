@@ -1,9 +1,9 @@
 from brownie import MarriageFactory, accounts
 
 def main():
-    epDeploy()
+    marriageDeploy()
 
-def epDeploy():
+def marriageDeploy():
     account = accounts.load('victor')
     print(f'Accounts: {account}')
     deployed = MarriageFactory[-1].createMarriage('0x5dE5F9e27BE687bF21f0795fA2D0359972739aB6',

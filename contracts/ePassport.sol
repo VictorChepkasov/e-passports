@@ -70,7 +70,7 @@ contract EPassport {
         ePassport.died = false;
         ePassport.id = id;
         ePassport.married = false;
-        ePassport.wallets.push(msg.sender);
+        ePassport.wallets.push(wallet);
 
         emit CreatePassoport(ePassport.id, ePassport.wallet, ePassport.firstName);
     }

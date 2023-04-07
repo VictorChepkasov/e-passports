@@ -8,6 +8,7 @@ contract MarriageFactory {
     address epFactoryAddress;
     Marriage[] public marriages;
     mapping(address => mapping(address => Marriage)) public addressMarriage;
+    Marriage.MarriageInfo[] marriagesInfo;
 
     constructor(address _epFactoryAddress) {
         epFactoryAddress = _epFactoryAddress;
@@ -29,7 +30,14 @@ contract MarriageFactory {
         return marriages[id].getMarriageInfo();
     }
 
-    function getAllMarriages() public view returns(Marriage[] memory) {
-        return marriages;
+    function getAllMarriages() public view returns(Marriage.MarriageInfo[] memory) {
+        Marriage.MarriageInfo[] memory allEPassports = marriagesInfo;
+        
+        for (uint i = 0; i < marriages.length; i++) {
+            Marriage.MarriageInfo memory marriageInfo = marriages[i].getMarriageInfo();
+            allEPassports[i] = marriageInfo; 
+        }
+
+        return allEPassports;
     }
 }

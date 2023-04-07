@@ -31,7 +31,7 @@ contract EPFactory {
         gender,
         dateOfBirth, totalPassports);
         ePassports.push(ePassport);
-        epMapping[msg.sender] = ePassport;
+        epMapping[wallet] = ePassport;
     }
 
     function callUpdatePassportInfo(
