@@ -5,10 +5,9 @@ import "./marriageFactory.sol";
 import "./ePassport.sol";
 
 contract EPFactory {
-    uint totalPassports;
-    EPassport[] public ePassports;
+    uint public totalPassports;
+    mapping(uint => EPassport) public ePassports;
     mapping(address => EPassport) public epMapping;
-    EPassport.EPassportInfo[] ePassportsInfo;
 
     function createEPassport(
         address wallet,
@@ -22,47 +21,30 @@ contract EPFactory {
     ) external {
         totalPassports++;
         EPassport ePassport = new EPassport(
-        wallet,
-        firstName,
-        lastName,
-        patronymic,
-        photo,
-        placeOfRegistration,
-        gender,
-        dateOfBirth, totalPassports);
-        ePassports.push(ePassport);
-        epMapping[wallet] = ePassport;
+            wallet,
+            firstName,
+            lastName,
+            patronymic,
+            photo,
+            placeOfRegistration,
+            gender,
+            dateOfBirth,
+            totalPassports
+        );
+        ePassports[totalPassports] = ePassport;
     }
 
-    function callUpdatePassportInfo(
-        uint id,
-        string memory firstName,
-        string memory lastName,
-        string memory photo
-    ) external {
-        ePassports[id].updatePassportInfo(firstName, lastName, photo);
+    function getEPassport(uint id) external view returns(EPassport) {
+        return ePassports[id]; 
     }
 
-    function callAddWallet(uint id, address wallet) external {
-        ePassports[id].addWallet(wallet);
-    }
-
-    function callDied(uint id) external {
-        ePassports[id].setDied();
-    }
-
-    function callGetEPassport(uint id) external view returns(EPassport.EPassportInfo memory) {
-        return ePassports[id].getPassportInfo();
-    }
-
-    function getAllEPassports() external view returns(EPassport.EPassportInfo[] memory) {
-        EPassport.EPassportInfo[] memory allEPassports = ePassportsInfo;
-        
-        for (uint i = 0; i < ePassports.length; i++) {
-            EPassport.EPassportInfo memory epInfo = ePassports[i].getPassportInfo();
-            allEPassports[i] = epInfo; 
+    function getEPassportsInfo(uint startElement, uint endElement) external view returns(EPassport.EPassportInfo[] memory) {
+        require(startElement < endElement, "Incorrect range!");
+        require(endElement <= totalPassports, "Incorrect end element index!");
+        EPassport.EPassportInfo[] memory getPassports;
+        for (uint i = startElement; i < endElement; i++) {
+            getPassports[i] = ePassports[i].getPassportInfo(); 
         }
-
-        return allEPassports;
+        return getPassports;
     }
 }

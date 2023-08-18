@@ -26,10 +26,10 @@ contract Marriage {
         bool valid; //находятся ли люди в браке?
     }
     
-    MarriageInfo marriage;
+    MarriageInfo public marriage;
     EPFactory epFactoryAddress;
     event CreateMarriage(address creator, address partner, uint indexed id);
-
+    
     modifier creatorConsent() {
         require(marriage.creatorConsent == true, "creator disagrees!");
         _;

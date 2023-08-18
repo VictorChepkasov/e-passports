@@ -23,6 +23,7 @@ contract EPassport {
     }
 
     EPassportInfo public ePassport;
+
     event CreatePassoport(uint indexed id, address wallet, string firstName);
     event Died(uint indexed id, address wallet, uint diedTime);
 
@@ -32,7 +33,10 @@ contract EPassport {
     }
 
     modifier onlyAdult() {
-        require((block.timestamp - ePassport.dateOfBirth) / 31556926 >= 18, "You're not adult!");
+        require(
+            (block.timestamp - ePassport.dateOfBirth) / 31556926 >= 18,
+            "You're not adult!"
+        );
         _;
     }
 
@@ -75,6 +79,10 @@ contract EPassport {
         emit CreatePassoport(ePassport.id, ePassport.wallet, ePassport.firstName);
     }
 
+    function updateMarried(bool married) external {
+        ePassport.married = married;
+    }
+
     function updatePassportInfo(
         string memory firstName,
         string memory lastName,
@@ -83,10 +91,6 @@ contract EPassport {
         ePassport.firstName = firstName;
         ePassport.lastName = lastName;
         ePassport.photo = photo;
-    }
-
-    function updateMarried(bool married) external {
-        ePassport.married = married;
     }
 
     function setDied() public {

@@ -4,11 +4,10 @@ pragma solidity ^0.8.0;
 import "./marriage.sol";
 
 contract MarriageFactory {
-    uint totalMarriage;
-    address epFactoryAddress;
-    Marriage[] public marriages;
+    uint public totalMarriage;
+    address public epFactoryAddress;
+    mapping(uint => Marriage) public marriages;
     mapping(address => mapping(address => Marriage)) public addressMarriage;
-    Marriage.MarriageInfo[] marriagesInfo;
 
     constructor(address _epFactoryAddress) {
         epFactoryAddress = _epFactoryAddress;
@@ -22,7 +21,7 @@ contract MarriageFactory {
         require(msg.sender != partner, "You can't marry yourself!");
         totalMarriage++;
         Marriage marriage = new Marriage(msg.sender, partner, epFactoryAddress, totalMarriage, creatorFullName, partnerFullName);
-        marriages.push(marriage);
+        marriages[totalMarriage] = marriage;
         addressMarriage[msg.sender][partner] = marriage;
     }
 
@@ -30,14 +29,13 @@ contract MarriageFactory {
         return marriages[id].getMarriageInfo();
     }
 
-    function getAllMarriages() public view returns(Marriage.MarriageInfo[] memory) {
-        Marriage.MarriageInfo[] memory allEPassports = marriagesInfo;
-        
-        for (uint i = 0; i < marriages.length; i++) {
-            Marriage.MarriageInfo memory marriageInfo = marriages[i].getMarriageInfo();
-            allEPassports[i] = marriageInfo; 
+    function getMarriagesInfo(uint startElement, uint endElement) public view returns(Marriage.MarriageInfo[] memory) {
+        require(startElement < endElement, "Incorrect range!");
+        require(endElement <= totalMarriage, "Incorrect end element index!");
+        Marriage.MarriageInfo[] memory getMerriages;
+        for (uint i = startElement; i < endElement; i++) {
+            getMerriages[i] = marriages[i].getMarriageInfo(); 
         }
-
-        return allEPassports;
+        return getMerriages;
     }
 }
