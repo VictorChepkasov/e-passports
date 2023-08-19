@@ -21,6 +21,7 @@ def createPassport(_from, firstName, lastName, patronymic, photo, placeOfRegistr
         'from': _from,
         'priority_fee': '10 wei'
     })
+    print('Passport created!')
 
 def addWallet(_from, passportId, walletAddress):
     getPassport(passportId).addWallet(walletAddress, {
