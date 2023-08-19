@@ -10,7 +10,6 @@ contract EPFactory {
     mapping(address => EPassport) public epMapping;
 
     function createEPassport(
-        address wallet,
         string memory firstName,
         string memory lastName,
         string memory patronymic,
@@ -21,7 +20,7 @@ contract EPFactory {
     ) external {
         totalPassports++;
         EPassport ePassport = new EPassport(
-            wallet,
+            msg.sender,
             firstName,
             lastName,
             patronymic,

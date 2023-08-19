@@ -62,7 +62,7 @@ contract EPassport {
         uint dateOfBirth,
         uint id
     ) {
-        ePassport.wallet =  wallet;
+        ePassport.wallet = wallet;
         ePassport.firstName = firstName;
         ePassport.lastName = lastName;
         ePassport.patronymic = patronymic;
@@ -79,18 +79,8 @@ contract EPassport {
         emit CreatePassoport(ePassport.id, ePassport.wallet, ePassport.firstName);
     }
 
-    function updateMarried(bool married) external {
-        ePassport.married = married;
-    }
-
-    function updatePassportInfo(
-        string memory firstName,
-        string memory lastName,
-        string memory photo
-    ) public stayinALive() onlyOwner() {
-        ePassport.firstName = firstName;
-        ePassport.lastName = lastName;
-        ePassport.photo = photo;
+    function getPassportInfo() external view returns(EPassportInfo memory) {
+        return ePassport;
     }
 
     function setDied() public {
@@ -102,7 +92,15 @@ contract EPassport {
         ePassport.wallets.push(wallet);
     }
 
-    function getPassportInfo() public view returns(EPassportInfo memory) {
-        return ePassport;
+    function updateName(
+        string memory firstName,
+        string memory lastName
+    ) external stayinALive() onlyOwner() {
+        ePassport.firstName = firstName;
+        ePassport.lastName = lastName;
+    }
+
+    function updatePhoto(string memory photo) external stayinALive() onlyOwner() {
+        ePassport.photo = photo;
     }
 }

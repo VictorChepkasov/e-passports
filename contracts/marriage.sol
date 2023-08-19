@@ -74,6 +74,10 @@ contract Marriage {
         epFactoryAddress = EPFactory(_epFactoryAddress);
     }
 
+    function updateMarried(EPassport.EPassportInfo memory ep, bool married) public {
+        ep.married = married;
+    }
+
     function updatePartnerName(string memory partnerFullName) public onlyMarriage onlyPartner {
         marriage.partnerFullName = partnerFullName;
     }
@@ -85,8 +89,8 @@ contract Marriage {
     function setMarriageInfo() public partnerConsent creatorConsent {
         marriage.valid = true;
         marriage.dateOfConclusion = block.timestamp;
-
-        epFactoryAddress.epMapping(marriage.creator).updateMarried(true);
+    
+        updateMarried(epFactoryAddress.epMapping(marriage.creator).getPassportInfo(), marriage.valid);
 
         emit CreateMarriage(marriage.creator, marriage.partner, marriage.id);
     }
