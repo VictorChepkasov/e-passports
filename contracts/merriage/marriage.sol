@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./passportsFactory.sol";
+import "../ePassport/passportsFactory.sol";
 
 /* 
 Очень простой (и не сильно проработанный) пример того, как можно совершенствовать контракт,
