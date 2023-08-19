@@ -1,14 +1,13 @@
 import pytest
 from conftest import *
 from brownie import chain, network
-from scripts.ePassportScripts import createPassport, getPassport, addWallet
-
-def getPassportInfo(passportId):
-    info = list(getPassport(passportId).getPassportInfo({
-        'from': owner,
-        'priority_fee': '10 wei'
-    }))
-    return info
+from scripts.ePassportScripts import (
+    createPassport,
+    getPassport,
+    addWallet,
+    updateName,
+    updatePhoto
+)
 
 def test_getPassportInfo(owner, epFactory):
     createPassport(owner, 'victor', 'Chickchirick', 'Chickchirickovich', './photo', 'Russia, Baikal', 0, chain.time())
@@ -19,16 +18,12 @@ def test_getPassportInfo(owner, epFactory):
     print(f'Passport info: {passportInfo}')
     passportInfo[8] //= 3600
     passportInfo[10] //= 3600
-    if network.show_active() != 'development':
-        ownerAddress = '0xB9a459a00855B0b82337E692D078d7292609701C'
-    else:
-        ownerAddress = accounts[0]
-    validInfo = [ownerAddress, 'victor', 'Chickchirick', 'Chickchirickovich', './photo', 'Russia, Baikal', 1, 0, chain.time() // 3600, 0, chain.time() // 3600, False, False, (ownerAddress, )]
+    validInfo = [owner.address, 'victor', 'Chickchirick', 'Chickchirickovich', './photo', 'Russia, Baikal', 1, 0, chain.time() // 3600, 0, chain.time() // 3600, False, False, (owner.address, )]
     assert passportInfo == validInfo
 
 def test_getPassportsInfo(owner, secondParty, thirdParty, epFactory):
-    #создаём паспорта
     createPassport(owner, 'victor', 'Chickchirick', 'Chickchirickovich', './photo', 'Russia, Baikal', 0, chain.time())
+    #создаём паспорта
     createPassport(secondParty, 'Sashka', 'Hahkovich', 'Aleksandrovich', './photo/sasha', 'Russia, Moscow', 0, chain.time() - 86400*2)
     createPassport(thirdParty, 'Vera', 'Beliver', 'Evgenievna', './photo/vera', 'Russia, Saint Peterburg', 1, chain.time() - 604800)
 
@@ -58,3 +53,21 @@ def test_addWallet(owner, secondParty, epFactory):
         'priority_fee': '10 wei'
     }))
     assert (owner.address, secondParty.address) == passportInfo[-1]
+
+def test_updateNameOrPhoto(owner, epFactory):
+    createPassport(owner, 'victor', 'Chickchirick', 'Chickchirickovich', './photo', 'Russia, Baikal', 0, chain.time())
+    oldInfo = list(getPassport(1).getPassportInfo({
+        'from': owner,
+        'priority_fee': '10 wei'
+    }))
+    print(f"Passport №1 info: {oldInfo}")
+    updateName(owner, 1, 'VICTORA', 'SECRET')
+    updatePhoto(owner, 1, './photoh/victoriaSecret')
+    info = list(getPassport(1).getPassportInfo({
+        'from': owner,
+        'priority_fee': '10 wei'
+    }))
+    info[8] //= 3600
+    info[10] //= 3600
+    validInfo = [owner.address, 'VICTORA', 'SECRET', 'Chickchirickovich', './photoh/victoriaSecret', 'Russia, Baikal', 1, 0, chain.time() // 3600, 0, chain.time() // 3600, False, False, (owner.address, )]
+    assert info == validInfo
