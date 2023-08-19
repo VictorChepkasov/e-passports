@@ -1,5 +1,5 @@
 import pytest
-from brownie import accounts, network, chain
+from brownie import accounts, network
 from scripts.deploy.epFactoryDeploy import deployEpFactory
 
 @pytest.fixture(scope='session')

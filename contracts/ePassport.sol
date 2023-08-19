@@ -1,27 +1,9 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract EPassport {
-    //куда вставить цифровые подписи?
-    //31556926 - год в формате unix timestamp
-    //совршеннолетие в 18
-   struct EPassportInfo {
-        address owner;
-        string firstName;
-        string lastName;
-        string patronymic; //отчество
-        string photo;
-        string placeOfRegistration; //адрес проживания
-        uint id; //id - уникальный идентификатор паспорта
-        uint gender; //0 - male, 1 - female
-        uint dateOfBirth; 
-        uint dateOfDeath; //если не умер, то 0
-        uint dateOfIssue; //дата выдачи паспорта
-        bool married; 
-        bool died;
-        address[] wallets;
-    }
+import "./IEPassport.sol";
 
+contract EPassport is IEPassport {
     EPassportInfo public ePassport;
 
     event CreatePassoport(uint indexed id, address wallet, string firstName);
