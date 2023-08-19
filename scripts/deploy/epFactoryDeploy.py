@@ -1,13 +1,10 @@
-from brownie import EPFactory, accounts
+from brownie import EPFactory
 
 def main():
     deployEpFactory()
 
-def deployEpFactory():
-    account = accounts.load('victor')
-    print(f'Accounts: {account}')
-    deployed = EPFactory.deploy({'from': account, "priority_fee": "1 wei"})
-
+def deployEpFactory(_from):
+    print(f'Accounts: {_from}')
+    deployed = EPFactory.deploy({'from': _from, "priority_fee": "1 wei"})
     print(f'Deployed seccesfull: {deployed}')
-
     return deployed
