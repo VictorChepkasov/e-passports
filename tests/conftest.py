@@ -10,14 +10,14 @@ def owner():
         return accounts[0]
     
 @pytest.fixture(scope='session')
-def debtor():
+def secondParty():
     if network.show_active() != 'development':
         return accounts.load('victor2')
     else:
         return accounts[1]
 
 @pytest.fixture(scope='session')
-def third_party():
+def thirdParty():
     if network.show_active() != 'development':
         return accounts.load('third_party')
     else:

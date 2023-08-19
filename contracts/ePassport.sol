@@ -6,7 +6,7 @@ contract EPassport {
     //31556926 - год в формате unix timestamp
     //совршеннолетие в 18
    struct EPassportInfo {
-        address wallet;
+        address owner;
         string firstName;
         string lastName;
         string patronymic; //отчество
@@ -28,7 +28,7 @@ contract EPassport {
     event Died(uint indexed id, address wallet, uint diedTime);
 
     modifier onlyOwner() {
-        require(ePassport.wallet == msg.sender, "Only Owner!");
+        require(ePassport.owner == msg.sender, "Only Owner!");
         _;
     }
 
@@ -62,7 +62,7 @@ contract EPassport {
         uint dateOfBirth,
         uint id
     ) {
-        ePassport.wallet = wallet;
+        ePassport.owner = wallet;
         ePassport.firstName = firstName;
         ePassport.lastName = lastName;
         ePassport.patronymic = patronymic;
@@ -76,7 +76,7 @@ contract EPassport {
         ePassport.married = false;
         ePassport.wallets.push(wallet);
 
-        emit CreatePassoport(ePassport.id, ePassport.wallet, ePassport.firstName);
+        emit CreatePassoport(ePassport.id, ePassport.owner, ePassport.firstName);
     }
 
     function getPassportInfo() external view returns(EPassportInfo memory) {
@@ -85,7 +85,7 @@ contract EPassport {
 
     function setDied() public {
         ePassport.died = true;
-        emit Died(ePassport.id, ePassport.wallet, block.timestamp);
+        emit Died(ePassport.id, ePassport.owner, block.timestamp);
     }
 
     function addWallet(address wallet) public onlyOwner() stayinALive() {

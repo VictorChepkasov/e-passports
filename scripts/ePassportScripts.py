@@ -1,12 +1,14 @@
-from brownie import EPFactory
+from brownie import EPFactory, EPassport
 
 # def main():
     # getPassport(0)
 
 def getPassport(passportId):
-    info = EPFactory[-1].getEPassport(passportId)
+    info = EPFactory[-1].getEPassport(passportId, {
+        'priority_fee': '10 wei'
+    })
     print(f'Passport №{passportId}: {info}')
-    return info
+    return EPassport.at(info)
 
 def getPassportsInfo(_from, startElement, endElement):
     passportsInfo = EPFactory[-1].getEPassportsInfo(startElement, endElement, {
@@ -17,7 +19,7 @@ def getPassportsInfo(_from, startElement, endElement):
     return passportsInfo
 
 def createPassport(_from, firstName, lastName, patronymic, photo, placeOfRegistration, gender, dateOfBirth):
-    EPFactory.createEPassport(firstName, lastName, patronymic, photo,placeOfRegistration, gender, dateOfBirth, {
+    EPFactory[-1].createEPassport(firstName, lastName, patronymic, photo,placeOfRegistration, gender, dateOfBirth, {
         'from': _from,
         'priority_fee': '10 wei'
     })
